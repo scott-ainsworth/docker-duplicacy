@@ -58,8 +58,12 @@ RUN ARCHITECTURE=linux_x64                                                      
     echo "${SHA256_DUPLICACY_WEB}  ${_BIN_DUPLICACY_WEB}" | sha256sum -s -c -                 && \
     chmod +x $_BIN_DUPLICACY_WEB                                                              && \
                                                                                                  \
+    # link ~/.duplicacy-web to /etc/duplicacy
+    ln -s ${_DIR_CONF} ${_DIR_WEB}                                                            && \
+                                                                                                 \
     # create some dirs
     mkdir -p                                                                                     \
+      ${_DIR_CONF}                                                                               \
       ${_DIR_CACHE}/repositories                                                                 \
       ${_DIR_CACHE}/stats                                                                        \
       ${_DIR_WEB}/bin                                                                            \
@@ -73,10 +77,6 @@ RUN ARCHITECTURE=linux_x64                                                      
     ln -s /dev/stdout /var/log/duplicacy_web.log                                              && \
                                                                                                  \
     # stage the rest of the web directory
-    ln -s ${_DIR_CONF}/settings.json  ${_DIR_WEB}/settings.json                               && \
-    ln -s ${_DIR_CONF}/duplicacy.json ${_DIR_WEB}/duplicacy.json                              && \
-    ln -s ${_DIR_CONF}/licenses.json  ${_DIR_WEB}/licenses.json                               && \
-    ln -s ${_DIR_CONF}/filters        ${_DIR_WEB}/filters                                     && \
     ln -s ${_DIR_CACHE}/stats         ${_DIR_WEB}/stats
 
 EXPOSE 3875
